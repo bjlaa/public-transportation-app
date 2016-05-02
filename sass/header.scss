@@ -1,0 +1,20 @@
+.header {
+	width: 100%;
+	background-color: $salmon;
+	font-family: $font;
+	.title-app {
+		width: 100%;
+		text-align: center;
+		padding-top: 30px;
+		color: $wine;
+		font-size: 30pt;
+	}
+	.subtitle-app {
+		width: 100%;
+		text-align: center;
+		color: $beige;
+		font-size: 18pt;
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+}

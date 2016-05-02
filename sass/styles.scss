@@ -1,0 +1,45 @@
+$beige: #FFC2AA;
+$salmon: #D4886A;
+$wine: #551800;
+$font: "Raleway", Arial, sans-serif;
+
+
+
+body,
+html,
+#main {
+  margin: 0;
+  padding:0;
+}
+a, nav a, button {
+  min-height: 48px !important;
+  min-width: 48px;
+}
+img,
+a,
+embed,
+object,
+video {
+  max-width: 100%;
+}
+a {
+  display: inline-block;
+  &:link {
+  	text-decoration: none;
+  	color: white;
+  }
+  &:visited {
+  	text-decoration: none;
+  	color: white;
+  }
+  &:hover {
+  	@media (min-width:768px){
+
+  	}
+  	text-decoration: none;
+  }
+}
+
+@import 'header';
+@import 'search';
+@import 'searchform';
