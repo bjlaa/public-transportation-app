@@ -159,7 +159,9 @@ class App extends React.Component {
 
   loadNextMetros(departure, destination) {
     console.log(departure);
-    fetch('http://api-ratp.pierre-grimaud.fr/v2/metros/1/stations/{StationId}?destination={DestinationId}')
+    fetch('http://api-ratp.pierre-grimaud.fr/v2/metros/1/stations/' 
+      + departure +'?destination=' + destination +'')
+
   }
 
   render() {
