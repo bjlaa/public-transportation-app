@@ -8,7 +8,10 @@ class SearchContainer extends React.Component {
   	var searchState = this.props.searchState;
   	switch (searchState){
   	  case 'search':
-  	  	renderedDiv = <SearchForm />
+  	  	renderedDiv = <SearchForm 
+                      loadNextMetros={this.props.loadNextMetros}
+                      stationNames={this.props.stationNames}
+                      responseTest={this.props.responseTest}/>
   	  	break;
   	  case 'answer':
   	    renderedDiv = <SearchAnswer />

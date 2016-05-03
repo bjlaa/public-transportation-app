@@ -1,7 +1,22 @@
 .search-form {
-	width: 100%;
-	.departure {
-		font-size: 30pt;
-		margin-top: 30px;
-	}
+  width: 100%;
+  .departure {
+  	font-size: 20pt;
+  	margin-top: 30px;
+  	text-align: left;
+    padding-left: 30px;
+  	}
+  .destination {
+  	@extend .departure;
+  }
+  .submit {
+  	width: 100%;
+  	height: 100%;
+  	text-align: center;
+  	margin-top: 30px;
+  	input[type=submit] {
+  		font:19px $font;
+  		font-size: 10pt;
+  	}
+  }
 }
