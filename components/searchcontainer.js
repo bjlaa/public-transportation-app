@@ -14,7 +14,8 @@ class SearchContainer extends React.Component {
                       responseTest={this.props.responseTest}/>
   	  	break;
   	  case 'answer':
-  	    renderedDiv = <SearchAnswer />
+  	    renderedDiv = <SearchAnswer 
+                      nextMetros={this.props.nextMetros}/>
   	    break;
   	}
 

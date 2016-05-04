@@ -4,17 +4,25 @@ class SearchForm extends React.Component {
   
   handleSubmit(e) {
     e.preventDefault();
-    var departure = this.refs.departure.value;
-    var destination = this.refs.destination.value;
-    this.props.loadNextMetros(departure, destination);
+    var departArray = JSON.parse('['+this.refs.departure.value+']');
+    var destiArray = JSON.parse('['+this.refs.destination.value+']');
+    console.log(destiArray);
+    var departureOrder = departArray[0];
+    var departureId = departArray[1];
+    var destination = destiArray[1];
+
+    
+    this.props.loadNextMetros(departureOrder, departureId, destination);
   }
 
   render() {
     var stationList;
     if(this.props.stationNames) {
-      stationList = this.props.stationNames.response.stations.map(function(station) {
-        return <option key={station.id} value={station.id}>{station.name}</option>
-      });      
+      stationList = this.props.stationNames.map(function(station) {
+        return <option key={station.id} value={[station.order, station.id]}>{station.name}</option>
+      });
+      var revStationList = stationList.slice();
+      revStationList.reverse();
     }
 
     return (
@@ -33,7 +41,7 @@ class SearchForm extends React.Component {
             <div className='destination'>
               <div>Destination:</div>
               <select ref='destination' name='destination' id='destination'>
-                {stationList}
+                {revStationList}
               </select>
               </div>
       	  </label>
