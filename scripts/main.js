@@ -22,11 +22,23 @@ class App extends React.Component {
       stationNames: '',
   	}
   }
+
   componentWillMount() {
+    if(navigator.serviceWorker) {
+      navigator.serviceWorker.register('./scripts/sw.js', {
+        /*scope: ''  !!! DONT FORGET THE SCOPE FOR GH PAGES */
+      })
+      .then(function() {
+        console.log('success!');
+      });
+    }
     var glawie= this.state.stationNames;
     fetch('http://api-ratp.pierre-grimaud.fr/v2/metros/1/stations')
     .then(r => r.json())
     .then(data => this.setState({stationNames: data.response.stations}))
+
+  }
+  componentDidMount() {
 
   }
   componentDidUpdate() {
