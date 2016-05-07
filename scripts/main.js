@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom';
 import Header from '../components/header.js';
 import SearchContainer from '../components/searchcontainer.js';
 
+
 /*
   App component
   <App />
@@ -25,22 +26,18 @@ class App extends React.Component {
 
   componentWillMount() {
     if(navigator.serviceWorker) {
-      navigator.serviceWorker.register('./scripts/sw.js', {
-        /*scope: ''  !!! DONT FORGET THE SCOPE FOR GH PAGES */
+      navigator.serviceWorker.register('./sw.js', {
+        scope: '/' 
       })
-      .then(function() {
-        console.log('success!');
-      });
     }
-    var glawie= this.state.stationNames;
-    fetch('http://api-ratp.pierre-grimaud.fr/v2/metros/1/stations')
-    .then(r => r.json())
-    .then(data => this.setState({stationNames: data.response.stations}))
-
   }
+
   componentDidMount() {
-
+    fetch('http://api-ratp.pierre-grimaud.fr/v2/metros/1f/stations')
+    .then(r => r.json())
+    .then(data => this.setState({stationNames: data.response.stations}));
   }
+
   componentDidUpdate() {
     if(this.state.stationNames[0].order){
       return null;

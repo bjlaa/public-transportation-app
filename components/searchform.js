@@ -6,7 +6,6 @@ class SearchForm extends React.Component {
     e.preventDefault();
     var departArray = JSON.parse('['+this.refs.departure.value+']');
     var destiArray = JSON.parse('['+this.refs.destination.value+']');
-    console.log(destiArray);
     var departureOrder = departArray[0];
     var departureId = departArray[1];
     var destination = destiArray[1];
