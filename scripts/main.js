@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import idb from 'indexeddb-promised';
 
 /*
   Components imports
@@ -46,6 +47,7 @@ class App extends React.Component {
         window.location.reload();
       });
     }
+    this.runIDB();
   }
 
   componentDidMount() {
@@ -60,6 +62,12 @@ class App extends React.Component {
     } else {
       this.addOrderNumber();      
     }
+  }
+
+  runIDB() {
+    var dbPromise = idb.open('PTApp-db', 1, function(upgradeDb) {
+      var mainStore = upgradeDb.createObjectStore('mainStore');
+    });
   }
 
   showUpdateReady() {
