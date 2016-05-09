@@ -26,14 +26,30 @@ class App extends React.Component {
 
   componentWillMount() {
     if(navigator.serviceWorker) {
-      navigator.serviceWorker.register('./sw.js', {
-        scope: '/' 
-      })
+      navigator.serviceWorker.register('./sw.js', {scope: '/'}).then(function(reg) {
+        if(!navigator.serviceWorker.controller) {
+          return
+        }
+        if(reg.waiting) {
+          console.log('waiting');
+          /*updateready*/
+          return;
+        }
+        if(reg.installing) {
+          console.log('installing')
+          /*trackinstalling*/
+          return;
+        }
+      });
+
+      navigator.serviceWorker.addEventListener('controllerchange', function() {
+        window.location.reload();
+      });
     }
   }
 
   componentDidMount() {
-    fetch('http://api-ratp.pierre-grimaud.fr/v2/metros/1f/stations')
+    fetch('http://api-ratp.pierre-grimaud.fr/v2/metros/1/stations')
     .then(r => r.json())
     .then(data => this.setState({stationNames: data.response.stations}));
   }
@@ -44,6 +60,18 @@ class App extends React.Component {
     } else {
       this.addOrderNumber();      
     }
+  }
+
+  showUpdateReady() {
+    /* add refresh/dismiss button to app + onclick event*/
+    /* 
+      if(answer != 'refresh') return;
+      worker.postMessage({action: 'skipWaiting'});
+     */
+  }
+
+  updateVersion() {
+
   }
 
   addOrderNumber() {
