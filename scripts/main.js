@@ -29,32 +29,37 @@ class App extends React.Component {
   }
 
   componentWillMount() {
-    var self = this;
-    var nextMetros = self.state.nextMetros;
     if(navigator.serviceWorker) {
-      navigator.serviceWorker.register('./sw.js', {scope: '/public-transportation-app/'})
-      .then(function() {
-        idb.open('PTApp-d', 2, function(upgradeDb) {
-          var store = upgradeDb.createObjectStore('mainStore', {keypath: 'id'});
-        }).then(function() {
-          if(nextMetros) {
-            var tx = db.transaction('mainStore', 'readwrite');
-            var store = tx.objectStore('mainStore');
-            store.put({foo: 'foo'});
-            return tx.complete;           
-          }
+      navigator.serviceWorker.register('./sw.js', {scope: '/public-transportation-app/'});
 
-        }).then(function() {
-          console.log('Last search added to idb');
-        });
-      });
+      navigator.serviceWorker.addEventListener('message', function(message) {
+        console.log(message);
+      })
     }
+
+
+
   }
 
   componentDidMount() {
+    var self = this;
     fetch('http://api-ratp.pierre-grimaud.fr/v2/metros/1/stations')
     .then(r => r.json())
-    .then(data => this.setState({stationNames: data.response.stations}));
+    .then(data => this.setState({stationNames: data.response.stations}))
+    .then(function() {
+      var stations = self.state.stationNames;
+      self.dbPromise().then(function(db) {
+        var tx = db.transaction('stationsStore', 'readwrite');
+        var store = tx.objectStore('stationsStore');
+        stations.forEach(function(station) {
+          console.log(station);
+          store.put(station);
+        });
+      });
+    });
+
+    this.sendMessage('hi this is a test');
+
   }
 
   componentDidUpdate() {
@@ -63,6 +68,38 @@ class App extends React.Component {
     } else {
       this.addOrderNumber();      
     }
+
+    if(this.state.nextMetros) {
+
+    }
+  }
+
+  dbPromise() {
+    return idb.open('PTApp-db5', 1, function(upgradeDb) {
+      switch(upgradeDb.oldVersion) {
+        case 0:
+          var stationsStore = upgradeDb.createObjectStore('stationsStore', {keyPath: 'number', autoIncrement: true});
+        case 1:
+          upgradeDb.createObjectStore('lastRouteSearched', {keyPath:'number', autoIncrement: true});
+      }
+      
+    });
+  }
+
+  sendMessage(message) {
+    return new Promise(function(resolve, reject) {
+      var messageChannel = new MessageChannel();
+      messageChannel.port1.onmessage = function(event) {
+
+        if(event.data.error) {
+          reject(event.data.error);
+        } else {
+          resolve(event.data);
+        }
+      }
+      navigator.serviceWorker.controller.postMessage(message, [messageChannel.port2]);    
+    });
+    
   }
 
   addOrderNumber() {

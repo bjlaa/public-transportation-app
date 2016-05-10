@@ -42,6 +42,7 @@ self.addEventListener('fetch', function(event) {
       })
     ); 	
   }*/
+
   var requestUrl = new URL(event.request.url);
 
   if(requestUrl.origin === location.origin) {
@@ -60,9 +61,11 @@ self.addEventListener('fetch', function(event) {
 });
 
 self.addEventListener('message', function(event) {
+
   if(event.data.action == 'skipWaiting') {
     self.skipWaiting();
   }
+  event.ports[0].postMessage({testmessage: 'This is my response'});
 });
 
 
