@@ -29,13 +29,23 @@ class App extends React.Component {
   }
 
   componentWillMount() {
+    var self = this;
+    var nextMetros = self.state.nextMetros;
     if(navigator.serviceWorker) {
-      navigator.serviceWorker.register('./sw.js', {scope: '/'})
+      navigator.serviceWorker.register('./sw.js', {scope: '/public-transportation-app/'})
       .then(function() {
-        idb.open('PTApp-db', 1, function(upgradeDb) {
+        idb.open('PTApp-d', 2, function(upgradeDb) {
           var store = upgradeDb.createObjectStore('mainStore', {keypath: 'id'});
         }).then(function() {
-          console.log('DB opened!');
+          if(nextMetros) {
+            var tx = db.transaction('mainStore', 'readwrite');
+            var store = tx.objectStore('mainStore');
+            store.put({foo: 'foo'});
+            return tx.complete;           
+          }
+
+        }).then(function() {
+          console.log('Last search added to idb');
         });
       });
     }
