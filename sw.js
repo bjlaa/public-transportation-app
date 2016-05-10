@@ -1,10 +1,11 @@
-var staticCacheName = 'PTApp-v5';
+var staticCacheName = 'PTApp-v4';
 
 self.addEventListener('install', function(event) {
+
   event.waitUntil(
     caches.open(staticCacheName).then(function(cache) {
       return cache.addAll([
-        '/',
+        '/skeleton',
         'scripts/main.js',
         'css/styles.css',
       ]);
@@ -28,6 +29,27 @@ self.addEventListener('activate', function(event) {
 });
 
 self.addEventListener('fetch', function(event) {
+
+  /*if(event.request.url.endsWith('/stations')) {
+    event.respondWith(
+      fetch(event.request).then(function(response) {
+      	if(response.status == 404) {
+      		return new Response(console.log('glawie'));
+      	}
+      	return response;
+      }).catch(function() {
+      	return new Response('Uh oh that totally failed!');
+      })
+    ); 	
+  }*/
+  var requestUrl = new URL(event.request.url);
+
+  if(requestUrl.origin === location.origin) {
+    if(requestUrl.pathname === '/') {
+      event.respondWith(caches.match('/skeleton'));
+      return;
+    }
+  }
   event.respondWith(
     caches.match(event.request).then(function(response) {
       if(response) return response;
@@ -35,6 +57,12 @@ self.addEventListener('fetch', function(event) {
       return fetch(event.request);
     })
   );
+});
+
+self.addEventListener('message', function(event) {
+  if(event.data.action == 'skipWaiting') {
+    self.skipWaiting();
+  }
 });
 
 

@@ -66,6 +66,8 @@ class App extends React.Component {
     this.setState({stationNames: orderedStations});
   }
 
+
+
   loadNextMetros(departureOrder, departureId, destination) {
     var result = departureOrder - destination;
     var direction;
