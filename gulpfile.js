@@ -101,7 +101,6 @@ gulp.task('scripts', function() {
   return buildScript('main.js', false); // this will run once because we set watch to false
 });
 
-
 // run 'scripts' task first, then watch for future changes
 gulp.task('default', ['styles','scripts','browser-sync'], function() {
   gulp.watch('./sass/**/*.scss', ['styles']);

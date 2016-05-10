@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import idb from 'indexeddb-promised';
+import idb from '../idbpromised.js';
+
 
 /*
   Components imports
@@ -16,6 +17,8 @@ import SearchContainer from '../components/searchcontainer.js';
 */
 
 
+
+
 class App extends React.Component {
   constructor(props) {
   	super(props);
@@ -27,27 +30,15 @@ class App extends React.Component {
 
   componentWillMount() {
     if(navigator.serviceWorker) {
-      navigator.serviceWorker.register('./sw.js', {scope: '/'}).then(function(reg) {
-        if(!navigator.serviceWorker.controller) {
-          return
-        }
-        if(reg.waiting) {
-          console.log('waiting');
-          /*updateready*/
-          return;
-        }
-        if(reg.installing) {
-          console.log('installing')
-          /*trackinstalling*/
-          return;
-        }
-      });
-
-      navigator.serviceWorker.addEventListener('controllerchange', function() {
-        window.location.reload();
+      navigator.serviceWorker.register('./sw.js', {scope: '/'})
+      .then(function() {
+        idb.open('PTApp-db', 1, function(upgradeDb) {
+          var store = upgradeDb.createObjectStore('mainStore', {keypath: 'id'});
+        }).then(function() {
+          console.log('DB opened!');
+        });
       });
     }
-    this.runIDB();
   }
 
   componentDidMount() {
@@ -62,24 +53,6 @@ class App extends React.Component {
     } else {
       this.addOrderNumber();      
     }
-  }
-
-  runIDB() {
-    var dbPromise = idb.open('PTApp-db', 1, function(upgradeDb) {
-      var mainStore = upgradeDb.createObjectStore('mainStore');
-    });
-  }
-
-  showUpdateReady() {
-    /* add refresh/dismiss button to app + onclick event*/
-    /* 
-      if(answer != 'refresh') return;
-      worker.postMessage({action: 'skipWaiting'});
-     */
-  }
-
-  updateVersion() {
-
   }
 
   addOrderNumber() {
