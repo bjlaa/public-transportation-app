@@ -30,9 +30,8 @@ class App extends React.Component {
 
   componentWillMount() {
     if(navigator.serviceWorker) {
-      /*
-      navigator.serviceWorker.register('./sw.js', {scope: '/'});
-*/
+      
+      navigator.serviceWorker.register('./sw.js', {scope: '/public-transportation-app/'});
       navigator.serviceWorker.addEventListener('message', function(message) {
         console.log(message);
       })
