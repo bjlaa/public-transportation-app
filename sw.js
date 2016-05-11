@@ -42,14 +42,14 @@ self.addEventListener('fetch', function(event) {
       })
     ); 	
   }*/
-  
+
   console.log(event);
 
   var requestUrl = new URL(event.request.url);
 
   if(requestUrl.origin === location.origin) {
     if(requestUrl.pathname === '/') {
-      event.respondWith(caches.match('/skeleton'));
+      event.respondWith(caches.match('./skeleton'));
       return;
     }
   }
