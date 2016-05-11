@@ -30,8 +30,9 @@ class App extends React.Component {
 
   componentWillMount() {
     if(navigator.serviceWorker) {
-      navigator.serviceWorker.register('./sw.js', {scope: '/public-transportation-app/'});
-
+      /*
+      navigator.serviceWorker.register('./sw.js', {scope: '/'});
+*/
       navigator.serviceWorker.addEventListener('message', function(message) {
         console.log(message);
       })
@@ -52,7 +53,6 @@ class App extends React.Component {
         var tx = db.transaction('stationsStore', 'readwrite');
         var store = tx.objectStore('stationsStore');
         stations.forEach(function(station) {
-          console.log(station);
           store.put(station);
         });
       });
@@ -90,10 +90,10 @@ class App extends React.Component {
     return new Promise(function(resolve, reject) {
       var messageChannel = new MessageChannel();
       messageChannel.port1.onmessage = function(event) {
-
         if(event.data.error) {
           reject(event.data.error);
         } else {
+          console.log(event);
           resolve(event.data);
         }
       }
@@ -116,6 +116,7 @@ class App extends React.Component {
 
 
   loadNextMetros(departureOrder, departureId, destination) {
+    var self = this;
     var result = departureOrder - destination;
     var direction;
     if(result < 0) {
@@ -125,11 +126,14 @@ class App extends React.Component {
     } else if(result = 0) {
 
     }
-    fetch('http://api-ratp.pierre-grimaud.fr/v2/metros/1/stations/' 
+    fetch('http://api-ratp.pierre-grimaud.fr/v2z/metros/1/stations/' 
       + departureId +'?destination='+ direction +'')
     .then(r => r.json())
     .then(data => this.setState({nextMetros: data.response.schedules}))
-    .then(this.setState({searchState: 'answer'}));
+    .then(this.setState({searchState: 'answer'}))
+    .catch(function() {
+      self.setState({searchState: 'error'});
+    });
 
   }
 

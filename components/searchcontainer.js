@@ -1,6 +1,7 @@
 import React from 'react';
 import SearchForm from '../components/searchform.js';
 import SearchAnswer from '../components/searchanswer.js';
+import SearchAnswerError from '../components/searchanswererror.js';
 
 class SearchContainer extends React.Component {
   render() {
@@ -17,6 +18,8 @@ class SearchContainer extends React.Component {
   	    renderedDiv = <SearchAnswer 
                       nextMetros={this.props.nextMetros}/>
   	    break;
+      case 'error':
+        renderedDiv = <SearchAnswerError />
   	}
 
 

@@ -1,0 +1,13 @@
+.search-answer-error {
+	width: 50%;
+	margin-left: 25%;
+	padding-top: 40px;
+	font-family: $font;
+	font-size: 15pt;
+
+	.sorry-message {
+		color: white;
+		font-size: 18pt;
+		padding-bottom: 50px;
+	}
+}

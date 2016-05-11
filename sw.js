@@ -55,7 +55,13 @@ self.addEventListener('fetch', function(event) {
     caches.match(event.request).then(function(response) {
       if(response) return response;
 
-      return fetch(event.request);
+      return fetch(event.request)
+            .catch(function() {
+              console.log('pascool');
+              /*
+              event.ports[0].postMessage({messageError: 'error'});
+              */
+            });
     })
   );
 });
@@ -65,7 +71,9 @@ self.addEventListener('message', function(event) {
   if(event.data.action == 'skipWaiting') {
     self.skipWaiting();
   }
+  /*
   event.ports[0].postMessage({testmessage: 'This is my response'});
+  */
 });
 
 
