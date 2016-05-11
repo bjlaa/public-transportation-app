@@ -38,12 +38,10 @@ class App extends React.Component {
         console.log(message);
       })
     }
-
-
-
   }
 
   componentDidMount() {
+
     var self = this;
     fetch('http://api-ratp.pierre-grimaud.fr/v2/metros/1/stations')
     .then(r => r.json())

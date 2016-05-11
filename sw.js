@@ -42,6 +42,8 @@ self.addEventListener('fetch', function(event) {
       })
     ); 	
   }*/
+  
+  console.log(event);
 
   var requestUrl = new URL(event.request.url);
 
@@ -57,7 +59,6 @@ self.addEventListener('fetch', function(event) {
 
       return fetch(event.request)
             .catch(function() {
-              console.log('pascool');
               /*
               event.ports[0].postMessage({messageError: 'error'});
               */
