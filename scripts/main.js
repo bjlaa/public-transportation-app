@@ -29,8 +29,10 @@ class App extends React.Component {
   }
 
   componentWillMount() {
+    /*
+      Registers service worker
+    */
     if(navigator.serviceWorker) {
-      
       navigator.serviceWorker.register('./sw.js', {scope: '/public-transportation-app/'});
       navigator.serviceWorker.addEventListener('message', function(message) {
         console.log(message);
@@ -125,7 +127,7 @@ class App extends React.Component {
     } else if(result = 0) {
 
     }
-    fetch('http://api-ratp.pierre-grimaud.fr/v2z/metros/1/stations/' 
+    fetch('http://api-ratp.pierre-grimaud.fr/v2/metros/1/stations/' 
       + departureId +'?destination='+ direction +'')
     .then(r => r.json())
     .then(data => this.setState({nextMetros: data.response.schedules}))
