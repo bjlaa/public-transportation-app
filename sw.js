@@ -1,4 +1,4 @@
-var staticCacheName = 'PTApp-v4';
+var staticCacheName = 'PTApp-v7';
 
 self.addEventListener('install', function(event) {
 
@@ -6,7 +6,7 @@ self.addEventListener('install', function(event) {
     caches.open(staticCacheName).then(function(cache) {
       return cache.addAll([
         '/skeleton',
-        'scripts/main.js',
+        'build/main.js',
         'css/styles.css',
       ]);
     })
@@ -43,7 +43,6 @@ self.addEventListener('fetch', function(event) {
     ); 	
   }*/
 
-  console.log(event);
 
   var requestUrl = new URL(event.request.url);
 

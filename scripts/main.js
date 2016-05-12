@@ -43,7 +43,7 @@ class App extends React.Component {
   componentDidMount() {
 
     var self = this;
-    fetch('http://api-ratp.pierre-grimaud.fr/v2d/metros/1/stations')
+    fetch('http://api-ratp.pierre-grimaud.fr/v2/metros/1/stations')
     .then(r => r.json())
     .then(data => this.setState({stationNames: data.response.stations}))
     .then(function() {
@@ -51,20 +51,20 @@ class App extends React.Component {
       self.dbPromise().then(function(db) {
         var tx = db.transaction('stationsStore', 'readwrite');
         var store = tx.objectStore('stationsStore');
+        store.clear();
         stations.forEach(function(station) {
           store.put(station);
         });
-      });
+      });    
     })
     .catch(function() {
-      console.log('error');
       self.dbPromise().then(function(db) {
         console.log('starting to get from db');
         var tx = db.transaction('stationsStore');
         var store = tx.objectStore('stationsStore');
         return store.getAll();
       }).then(function(stationsDB) {
-        self.setState({'stationNames': stationsDB});
+        self.setState({stationNames: stationsDB});
       });
     });
     this.sendMessage('hi this is a test');
