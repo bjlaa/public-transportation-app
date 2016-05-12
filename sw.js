@@ -1,4 +1,4 @@
-var staticCacheName = 'PTApp-v9';
+var staticCacheName = 'PTApp-v12';
 
 self.addEventListener('install', function(event) {
 

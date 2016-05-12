@@ -13,12 +13,23 @@ class SearchAnswer extends React.Component {
 
 
       var direction = this.props.directionRoute;
+      /*
+        This is calculated using the approximate minutes per 
+        station travelled ratio (the functionnality wasn't delivered 
+        in the API)
+      */
       var minutesToAdd = (this.props.numberStations*3) / 2;
 
 	  	var timeList = this.props.nextMetros.map(function(metro) {
 
         var min = metro.message.split('');
+        /*
+          This adds to our time the data fetched from the API stored
+          in our state (nextMetros) and allows us to show the next
+          departures/arrivals
+        */
         var departure = Moment(currentTime).add(min[0], 'minutes');
+
         var departureTime = Moment(departure).format('LT');
         console.log(departureTime);
 
@@ -28,9 +39,9 @@ class SearchAnswer extends React.Component {
 	  	  return (
 	  	  	<div className='time-item' key={metro.message}>
 	  	  	  <div className='item-destination'>Direction: {direction}</div>
-	  		  <div className='item-message'>Departure at: {departureTime} in {metro.message}</div>
-          <div className='item-message'>Arrival at: {arrivalTime}</div>
-	  		</div>
+	  		    <div className='item-message'>Departure at: {departureTime} in {metro.message}</div>
+            <div className='item-message'>Arrival at: {arrivalTime}</div>
+	  		  </div>
 	      )  	  	
 	  	});
 
@@ -39,7 +50,7 @@ class SearchAnswer extends React.Component {
   	
     return (
       	<div className='search-answer'>
-          <div>The next subways for this destination at {formattedCurrentTime} are:</div>
+          <div>The next subways for this destination are:</div>
           <div className='time-list'>
           	{timeList}
           </div>

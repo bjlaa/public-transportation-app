@@ -32,11 +32,15 @@ class App extends React.Component {
       * stationNames, in which we will store our data fetched and use it 
       throughout the app
 
-      *submitState unables or disables our form's submit button in case the
+      * submitState unables or disables our form's submit button in case the
       departure and destinations are the same
 
-      *directionRoute will let us display the direction when the search result 
+      * directionRoute will let us display the direction when the search result 
       appears
+
+      * time will let us store the time at the moment of the search allowing us
+      to calculate the departure and arrival time by using Moment.js and 
+      the numberStations
     */
   	this.state = {
   		searchState: 'search', 
@@ -53,9 +57,7 @@ class App extends React.Component {
       This registers our service worker
     */
     if(navigator.serviceWorker) {
-      /*
       navigator.serviceWorker.register('./sw.js', {scope: '/'});
-      */
       navigator.serviceWorker.addEventListener('message', function(message) {
         console.log(message);
       })
@@ -108,10 +110,6 @@ class App extends React.Component {
       return null;
     } else {
       this.addOrderNumber();      
-    }
-
-    if(this.state.nextMetros) {
-
     }
   }
 
