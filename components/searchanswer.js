@@ -8,7 +8,7 @@ class SearchAnswer extends React.Component {
   	if(this.props.nextMetros) {
 	  	var timeList = this.props.nextMetros.map(function(metro) {
 	  	  return (
-	  	  	<div className='time-item'>
+	  	  	<div className='time-item' key={metro.message}>
 	  	  	  <div className='item-destination'>{metro.destination}</div>
 	  		  <div className='item-message'>{metro.message}</div>
 	  		</div>

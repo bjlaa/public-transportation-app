@@ -2,12 +2,21 @@
   width: 100%;
   .departure {
   	font-size: 20pt;
-  	margin-top: 30px;
+  	padding-top: 30px;
   	text-align: left;
     padding-left: 30px;
+    #departure {
+      font-size: 15pt;
+      background: white;
+      height: 50px;
+      max-width: 80%;
+    }
   	}
   .destination {
   	@extend .departure;
+    #destination {
+      @extend #departure;
+    }
   }
   .submit {
   	width: 100%;

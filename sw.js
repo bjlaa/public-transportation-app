@@ -1,4 +1,4 @@
-var staticCacheName = 'PTApp-v7';
+var staticCacheName = 'PTApp-v9';
 
 self.addEventListener('install', function(event) {
 
@@ -30,51 +30,23 @@ self.addEventListener('activate', function(event) {
 
 self.addEventListener('fetch', function(event) {
 
-  /*if(event.request.url.endsWith('/stations')) {
-    event.respondWith(
-      fetch(event.request).then(function(response) {
-      	if(response.status == 404) {
-      		return new Response(console.log('glawie'));
-      	}
-      	return response;
-      }).catch(function() {
-      	return new Response('Uh oh that totally failed!');
-      })
-    ); 	
-  }*/
-
-
   var requestUrl = new URL(event.request.url);
-
   if(requestUrl.origin === location.origin) {
     if(requestUrl.pathname === '/') {
       event.respondWith(caches.match('./skeleton'));
       return;
     }
   }
+
   event.respondWith(
     caches.match(event.request).then(function(response) {
       if(response) return response;
 
-      return fetch(event.request)
-            .catch(function() {
-              /*
-              event.ports[0].postMessage({messageError: 'error'});
-              */
-            });
+      return fetch(event.request);
     })
   );
 });
 
-self.addEventListener('message', function(event) {
-
-  if(event.data.action == 'skipWaiting') {
-    self.skipWaiting();
-  }
-  /*
-  event.ports[0].postMessage({testmessage: 'This is my response'});
-  */
-});
 
 
 
