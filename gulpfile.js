@@ -79,10 +79,10 @@ function buildScript(file, watch) {
       .on('error', handleErrors)
       .pipe(source(file))
       // If you also want to uglify it
-      // .pipe(buffer())
-      // .pipe(uglify())
-      // .pipe(rename('app.min.js'))
-      // .pipe(gulp.dest('./build'))
+      .pipe(buffer())
+      .pipe(uglify())
+      .pipe(rename('app.min.js'))
+      .pipe(gulp.dest('./build'))
       .pipe(gulp.dest('./build/'))
       .pipe(reload({stream:true}))
   }
