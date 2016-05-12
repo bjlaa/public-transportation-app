@@ -5,7 +5,7 @@ class Header extends React.Component {
     return (
       <div className='header'>
       	<div className='title-app'>When's the next metro?</div>
-      	<div className='subtitle-app'>Your metro in real time</div>
+      	<div className='subtitle-app'>Paris Metro 1 in real time</div>
       </div>
     )
   }
