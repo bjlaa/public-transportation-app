@@ -4,14 +4,31 @@ class SearchForm extends React.Component {
   
   handleSubmit(e) {
     e.preventDefault();
+    this.props.createTimeStamp();
     var departArray = JSON.parse('['+this.refs.departure.value+']');
     var destiArray = JSON.parse('['+this.refs.destination.value+']');
     var departureOrder = departArray[0];
     var departureId = departArray[1];
-    var destination = destiArray[1];
+    var destinationOrder = destiArray[0];
+    var destinationId = destiArray[1];
 
-    
-    this.props.loadNextMetros(departureOrder, departureId, destination);
+    this.props.loadNextMetros(departureOrder, departureId, destinationOrder, destinationId);
+  }
+
+  testDisabling(e) {
+    e.preventDefault();
+    console.log('testing');
+    this.props.unableSubmit();
+
+    var departArray = JSON.parse('['+this.refs.departure.value+']');
+    var destiArray = JSON.parse('['+this.refs.destination.value+']');
+    var departureId = departArray[1];
+    var destinationId = destiArray[1];
+    console.log(departureId, destinationId);
+
+    if(departureId === destinationId) {
+      this.props.disableSubmit();
+    }
   }
 
   render() {
@@ -25,7 +42,7 @@ class SearchForm extends React.Component {
     }
 
     return (
-      	<form className='search-form' onSubmit={this.handleSubmit.bind(this)}>
+      	<form className='search-form' onChange={this.testDisabling.bind(this)} onSubmit={this.handleSubmit.bind(this)}>
 
       	  <label htmlFor='departure'>
             <div className='departure'>
@@ -46,7 +63,7 @@ class SearchForm extends React.Component {
       	  </label>
 
           <div className='submit'>
-            <input className='submit-button' type='submit' value='Submit'/>
+            <input className='submit-button' type='submit' value='Submit' disabled={this.props.submitState}/>
           </div>
 
       	</form>

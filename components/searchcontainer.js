@@ -10,12 +10,19 @@ class SearchContainer extends React.Component {
   	switch (searchState){
   	  case 'search':
   	  	renderedDiv = <SearchForm 
+                      createTimeStamp={this.props.createTimeStamp}
+                      submitState = {this.props.submitState}
+                      unableSubmit={this.props.unableSubmit}
+                      disableSubmit={this.props.disableSubmit}
                       loadNextMetros={this.props.loadNextMetros}
                       stationNames={this.props.stationNames}
                       responseTest={this.props.responseTest}/>
   	  	break;
   	  case 'answer':
-  	    renderedDiv = <SearchAnswer 
+  	    renderedDiv = <SearchAnswer
+                      numberStations={this.props.numberStations}
+                      time={this.props.time}
+                      directionRoute={this.props.directionRoute} 
                       nextMetros={this.props.nextMetros}/>
   	    break;
       case 'error':

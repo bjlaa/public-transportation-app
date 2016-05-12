@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import idb from '../idbpromised.js';
+import Moment from 'moment';
 
 
 /*
@@ -30,10 +31,20 @@ class App extends React.Component {
 
       * stationNames, in which we will store our data fetched and use it 
       throughout the app
+
+      *submitState unables or disables our form's submit button in case the
+      departure and destinations are the same
+
+      *directionRoute will let us display the direction when the search result 
+      appears
     */
   	this.state = {
   		searchState: 'search', 
       stationNames: '',
+      submitState: false,
+      directionRoute: '',
+      time: '',
+      numberStations: ''
   	}
   }
 
@@ -155,17 +166,26 @@ class App extends React.Component {
 /*
   This function fetches the next subways from the RATP API
 */
-  loadNextMetros(departureOrder, departureId, destination) {
+  loadNextMetros(departureOrder, departureId, destinationOrder, destinationId) {
     var self = this;
-    var result = departureOrder - destination;
-    var direction;
-    if(result < 0) {
-      direction ='la+defense';
-    } else if(result > 0) {
-      direction = 'chateau+de+vincennes';
-    } else if(result = 0) {
 
-    }
+
+    var result = departureOrder - destinationOrder;
+    var numberStations = Math.abs(result);
+    this.setState({numberStations: numberStations});
+
+
+    var direction;
+    if(result > 0) {
+      direction ='la+defense';
+      this.setState({directionRoute: 'La Defense'});
+    } else if(result < 0) {
+      direction = 'chateau+de+vincennes';
+      this.setState({directionRoute: 'Chateau de Vincennes'});
+    } 
+
+
+
     fetch('http://api-ratp.pierre-grimaud.fr/v2/metros/1/stations/' 
       + departureId +'?destination='+ direction +'')
     .then(r => r.json())
@@ -175,10 +195,23 @@ class App extends React.Component {
       in case of error, load the error component displaying the approximate
       time schedule
     */
-    .catch(function() {
+    .catch(function(error) {
+      console.log(error);
       self.setState({searchState: 'error'});
     });
 
+  }
+  unableSubmit() {
+    this.setState({submitState: false});
+  }
+
+  disableSubmit() {
+    this.setState({submitState: true});
+  }
+
+  createTimeStamp() {
+    var timeNow = Moment();
+    this.setState({time: timeNow});
   }
 
   render() {
@@ -186,6 +219,13 @@ class App extends React.Component {
   	  <div>
   	  	<Header />
   	  	<SearchContainer 
+        numberStations={this.state.numberStations}
+        time={this.state.time}
+        createTimeStamp={this.createTimeStamp.bind(this)}
+        directionRoute={this.state.directionRoute}
+        submitState = {this.state.submitState}
+        unableSubmit={this.unableSubmit.bind(this)}
+        disableSubmit={this.disableSubmit.bind(this)}
         nextMetros={this.state.nextMetros}
         loadNextMetros={this.loadNextMetros.bind(this)}
         stationNames={this.state.stationNames}
